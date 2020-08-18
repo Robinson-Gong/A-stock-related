@@ -8,7 +8,7 @@ import pywt
 
 
 def getkdatas(datestart, dateend):
-    ts.set_token('f080e8e80b7d59a508fd93f99e230ab69fabb4727541331ed86ac9e3')
+    ts.set_token('your token here')
     results1 = ts.pro_bar(ts_code= stockno, adj='qfq', start_date= datestart, end_date= dateend, ma = [3])
     results1.sort_values("trade_date", inplace=True)
     results1[results1['ma3'] == 'nan']
@@ -102,10 +102,10 @@ def analyze_fft(dataform1):
     plt.show()
     return 0
 
-stockno = '002602.SZ'
-csv_filepath1 = 'F:\stock data\\'+ stockno + '_k.csv'
-date0 = '20200201'
-date1 = '20200817'
+stockno = 'stock code'
+csv_filepath1 = 'saving file dic'+ stockno + '_k.csv'
+date0 = 'startdate'
+date1 = 'enddate'
 
 getkdatas(date0, date1)
 
