@@ -9,7 +9,7 @@ import pywt
 
 
 def getkdatas(datestart, dateend):
-    ts.set_token('f080e8e80b7d59a508fd93f99e230ab69fabb4727541331ed86ac9e3')
+    ts.set_token('your token here') 
     results1 = ts.pro_bar(ts_code= stockno, adj='qfq', asset= 'I',start_date= datestart, end_date= dateend, ma = [3])
     results1.sort_values("trade_date", inplace=True)
     results1[results1['ma3'] == 'nan']
@@ -103,14 +103,13 @@ def analyze_fft(dataform1):
     plt.show()
     return 0
 
-stockno = '000001.SH'
-csv_filepath1 = 'F:\stock data\\'+ stockno + '_k.csv'
-date0 = '20200201'
-date1 = '20200729'
+stockno = 'stock code'
+csv_filepath1 = 'your file saving path'+ stockno + '_k.csv'
+date0 = 'startdate'
+date1 = 'enddate'
 
 getkdatas(date0, date1)
 
-# 读取股票数据 m5曲线
 df = pd.read_csv(csv_filepath1, encoding='gbk')
 
 
@@ -118,6 +117,5 @@ df['ma3'] = df['ma3'].astype(float)
 
 analyze_fft(df)
 analyze_wavelet(df)
-#打印 股票详细信息，编码，公司名等
 realtimeinfo = ts.get_realtime_quotes(stockno)
 print(realtimeinfo)
