@@ -84,6 +84,55 @@ class getdata():
         results2.to_csv(self.path + '\\' + 'Index\SZSE\SZSE_k.csv', index=False, encoding='gbk')
         return 0
 
+    def getbasicdata(self):
+        path = self.path
+        isExists = os.path.exists(path)
+        if not isExists:
+            os.makedirs(path)
+        if self.asset == 'E':
+            csv_filepath1 = path + '\\' + 'Stock\\' + self.tscode
+        elif self.asset == 'I':
+            csv_filepath1 = path + '\\' + 'Index\\' + self.tscode
+        elif self.asset == 'C':
+            csv_filepath1 = path + '\\' + 'DigitalCurrency\\' + self.tscode
+        elif self.asset == 'FT':
+            csv_filepath1 = path + '\\' + 'Future\\' + self.tscode
+        elif self.asset == 'FD':
+            csv_filepath1 = path + '\\' + 'Fund\\' + self.tscode
+        elif self.asset == 'O':
+            csv_filepath1 = path + '\\' + 'Options\\' + self.tscode
+        elif self.asset == 'CB':
+            csv_filepath1 = path + '\\' + 'ConvertibleBond\\' + self.tscode
+        isExists = os.path.exists(csv_filepath1)
+        if not isExists:
+            os.makedirs(csv_filepath1)
+        csv_filepath1 = csv_filepath1 + '\\' + self.tscode + '_basic.csv'
+        pro = ts.pro_api()
+        if self.asset == 'E':
+            results = pro.daily_basic(ts_code=self.tscode,start_date=self.ds, end_date=self.de)
+            results.sort_values("trade_date", inplace=True)
+            results.to_csv(csv_filepath1, index=False, encoding='gbk')
+        elif self.asset == 'I':
+            results = pro.index_dailybasic(ts_code=self.tscode, start_date=self.ds, end_date=self.de)
+            results.sort_values("trade_date", inplace=True)
+            results.to_csv(csv_filepath1, index=False, encoding='gbk')
+        else:
+            print('This method only can get stock and index basic')
+        results1 = pro.index_dailybasic(ts_code='000001.SH', start_date=self.ds, end_date=self.de)
+        results1.sort_values("trade_date", inplace=True)
+        isExists = os.path.exists(self.path + '\\' + 'Index\SSE')
+        if not isExists:
+            os.makedirs(self.path + '\\' + 'Index\SSE')
+        results1.to_csv(self.path + '\\' + 'Index\SSE\SSE_basic.csv', index=False, encoding='gbk')
+        results2 = pro.index_dailybasic(ts_code='399001.SZ',  start_date=self.ds, end_date=self.de)
+        results2.sort_values("trade_date", inplace=True)
+        isExists = os.path.exists(self.path + '\\' + 'Index\SZSE')
+        if not isExists:
+            os.makedirs(self.path + '\\' + 'Index\SZSE')
+        results2.to_csv(self.path + '\\' + 'Index\SZSE\SZSE_basic.csv', index=False, encoding='gbk')
+        return 0
+
+
     def readdata(self, format):
         path = self.path
         path = path.strip()
