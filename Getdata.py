@@ -2,6 +2,11 @@ import tushare as ts
 import pandas as pd
 import os
 
+def datetime(df):
+    df.index = pd.to_datetime(df.trade_date, format='%Y%m%d')
+    df.sort_index(inplace=True)
+    df.drop(axis=1, columns="trade_date", inplace=True)
+    return df
 
 class getdata():
     def __init__(self, ds='', de='', tscode='', path='', asset='E', adj='qfq', freq='D', factor=''):
@@ -13,6 +18,7 @@ class getdata():
         self.adj = adj
         self.freq = freq
         self.factor = factor
+
     def getmargindata(self):
         path = self.path
         isExists = os.path.exists(path)
@@ -109,7 +115,7 @@ class getdata():
         csv_filepath1 = csv_filepath1 + '\\' + self.tscode + '_basic.csv'
         pro = ts.pro_api()
         if self.asset == 'E':
-            results = pro.daily_basic(ts_code=self.tscode,start_date=self.ds, end_date=self.de)
+            results = pro.daily_basic(ts_code=self.tscode, start_date=self.ds, end_date=self.de)
             results.sort_values("trade_date", inplace=True)
             results.to_csv(csv_filepath1, index=False, encoding='gbk')
         elif self.asset == 'I':
@@ -124,14 +130,13 @@ class getdata():
         if not isExists:
             os.makedirs(self.path + '\\' + 'Index\SSE')
         results1.to_csv(self.path + '\\' + 'Index\SSE\SSE_basic.csv', index=False, encoding='gbk')
-        results2 = pro.index_dailybasic(ts_code='399001.SZ',  start_date=self.ds, end_date=self.de)
+        results2 = pro.index_dailybasic(ts_code='399001.SZ', start_date=self.ds, end_date=self.de)
         results2.sort_values("trade_date", inplace=True)
         isExists = os.path.exists(self.path + '\\' + 'Index\SZSE')
         if not isExists:
             os.makedirs(self.path + '\\' + 'Index\SZSE')
         results2.to_csv(self.path + '\\' + 'Index\SZSE\SZSE_basic.csv', index=False, encoding='gbk')
         return 0
-
 
     def readdata(self, format):
         path = self.path
@@ -150,11 +155,12 @@ class getdata():
             elif self.asset == 'FT':
                 asset = 'Future'
             elif self.asset == 'FD':
-                asset  = 'Fund'
+                asset = 'Fund'
             elif self.asset == 'O':
                 asset = 'Options'
             elif self.asset == 'CB':
-                asset  = 'ConvertibleBond'
-            csv_filepath = self.path + '\\' + asset  + '\\' + self.tscode + '\\' + self.tscode + '_' + format + '.csv'
+                asset = 'ConvertibleBond'
+            csv_filepath = self.path + '\\' + asset + '\\' + self.tscode + '\\' + self.tscode + '_' + format + '.csv'
             csv_data = pd.read_csv(csv_filepath)
+            csv_data = datetime(csv_data)
             return csv_data
