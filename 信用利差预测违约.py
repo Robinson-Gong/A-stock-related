@@ -2,7 +2,7 @@
 """
 Created on Thu Nov 12 09:36:11 2020
 
-@author: liuhw
+@author: 
 """
 
 from WindPy import *
