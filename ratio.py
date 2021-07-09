@@ -35,7 +35,7 @@ def change_time_format(dataframe):
 
 
 def sql_connect():
-    connection = pymssql.connect(host='192.168.1.126', user='Wind', password='111111', database='WindDB')
+    connection = pymssql.connect(host='', user='', password='', database='')
     return connection
 
 
